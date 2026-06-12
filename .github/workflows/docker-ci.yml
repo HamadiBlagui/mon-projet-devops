@@ -1,0 +1,31 @@
+name: Mon Robot Pipeline CI
+
+# 1. Quand est-ce que le robot s'allume ?
+on:
+  push:
+    branches: [ "main" ]
+
+# 2. Qu'est-ce que le robot doit faire ?
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest # Le robot loue un ordinateur Linux vierge chez GitHub
+
+    steps:
+    # Étape A : Le robot télécharge ton code depuis GitHub sur sa machine virtuelle
+    - name: Récupérer le code du dépôt
+      uses: actions/checkout@v4
+
+    # Étape B : Le robot se connecte à ton compte Docker Hub
+    - name: Se connecter à Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    # Étape C : Le robot fabrique l'image et l'envoie sur Docker Hub
+    - name: Fabriquer et envoyer l'image Docker
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/mon-site-devops:latest

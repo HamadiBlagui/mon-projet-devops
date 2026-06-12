@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  mon-site:
+    image: mon-site-devops
+    ports:
+      - "8080:80"
+    volumes:
+      - ./index.html:/usr/share/nginx/html/index.html
+
+  ma-base-de-donnees:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: supersecretpassword
+    ports:
+      - "3306:3306"
