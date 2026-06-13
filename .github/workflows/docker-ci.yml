@@ -14,9 +14,9 @@ jobs:
 
     # BARRIÈRE 1 : On vérifie la propreté du fichier HTML
     - name: Vérifier la syntaxe HTML (Linting)
-      uses: htmlhint/htmlhint-action@v2
+      uses: htmlhint/action-htmlhint@v2.2.0
       with:
-        addresses: 'index.html'
+        files: 'index.html'
 
     # BARRIÈRE 2 : On vérifie la sécurité et l'optimisation du Dockerfile
     - name: Vérifier la sécurité du Dockerfile (Hadolint)
