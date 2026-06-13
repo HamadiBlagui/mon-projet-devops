@@ -12,13 +12,11 @@ jobs:
     - name: Récupérer le code du dépôt
       uses: actions/checkout@v4
 
-    # BARRIÈRE 1 : On vérifie la propreté du fichier HTML
+    # BARRIÈRE 1 : Utilisation directe de htmlhint via Node.js
     - name: Vérifier la syntaxe HTML (Linting)
-      uses: htmlhint/action-htmlhint@v2.2.0
-      with:
-        files: 'index.html'
+      run: npx htmlhint index.html
 
-    # BARRIÈRE 2 : On vérifie la sécurité et l'optimisation du Dockerfile
+    # BARRIÈRE 2 : On vérifie la sécurité du Dockerfile (Hadolint)
     - name: Vérifier la sécurité du Dockerfile (Hadolint)
       uses: hadolint/hadolint-action@v3.1.0
       with:
