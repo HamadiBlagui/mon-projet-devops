@@ -43,3 +43,13 @@ jobs:
         context: .
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/mon-site-devops:latest
+
+        # JOB 3 : La phase de Déploiement Continu (CD)
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-push # ⚠️ Ne se lance que si la CI et le Build Docker ont réussi !
+    
+    steps:
+    - name: Déclencher le déploiement sur Render
+      run: |
+        curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
