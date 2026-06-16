@@ -1,10 +1,7 @@
-name: Docker CI (Contrôle Qualité)
+name: Docker CI (Contrôle Qualité + Signal Jenkins)
 
-# Le script se déclenche à chaque fois que tu fais un "git push" sur la branche main
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
     branches: [ "main" ]
 
 jobs:
@@ -12,12 +9,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # 1. GitHub récupère ton code
     - name: Récupération du code
       uses: actions/checkout@v4
 
-    # 2. GitHub vérifie que la recette Dockerfile fonctionne chez lui
     - name: Test de fabrication de l'image Docker
       run: |
         docker build -t mon-site-test:latest .
         echo "✅ L'image Docker s'est construite sans aucune erreur !"
+
+    # 🧙‍♂️ C'EST ICI QUE LA MAGIE NOIRE OPÈRE : L'appel secret à Jenkins
+    - name: Envoyer le signal de déploiement à Jenkins
+      run: |
+        echo "Envoi du signal à Jenkins..."
+        curl -X POST -u "admin:${{ secrets.JENKINS_TOKEN }}" "${{ vars.JENKINS_URL }}/job/devops2026/build"
